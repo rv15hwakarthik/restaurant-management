@@ -134,6 +134,7 @@ function Cart({ lines, subtotalCents, closeModal }) {
         }),
       })
     router.replace("/app/orders");
+    router.refresh();
     closeModal();
     } catch(e) {
       console.error('Failed to place the order!', e)

@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum MemberRole {
+  OWNER
+  MANAGER
+  STAFF
+}
+
+enum OrderStatus {
+  DRAFT
+  OPEN
+  PAID
+  CANCELLED
+}
+
+model Restaurant {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  members   RestaurantMember[]
+  menuItems MenuItem[]
+  orders    Order[]
+
+  @@map("restaurants")
+}
+
+model RestaurantMember {
+  id             String     @id @default(uuid()) @db.Uuid
+  restaurantId   String     @map("restaurant_id") @db.Uuid
+  userId         String     @map("user_id") @db.Uuid
+  role           MemberRole
+  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([restaurantId, userId])
+  @@index([userId])
+  @@map("restaurant_members")
+}
+
+model MenuItem {
+  id           String   @id @default(uuid()) @db.Uuid
+  restaurantId String   @map("restaurant_id") @db.Uuid
+  name         String
+  description  String?
+  priceCents   Int      @map("price_cents")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  orderLines OrderLine[]
+
+  @@index([restaurantId])
+  @@map("menu_items")
+}
+
+model Order {
+  id              String      @id @default(uuid()) @db.Uuid
+  restaurantId    String      @map("restaurant_id") @db.Uuid
+  createdByUserId String      @map("created_by_user_id") @db.Uuid
+  status          OrderStatus @default(DRAFT)
+  totalCents      Int         @map("total_cents")
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  lines      OrderLine[]
+
+  @@index([restaurantId])
+  @@index([createdByUserId])
+  @@map("orders")
+}
+
+model OrderLine {
+  id             String @id @default(uuid()) @db.Uuid
+  orderId        String @map("order_id") @db.Uuid
+  menuItemId     String @map("menu_item_id") @db.Uuid
+  quantity       Int
+  unitPriceCents Int    @map("unit_price_cents")
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@map("order_lines")
+}

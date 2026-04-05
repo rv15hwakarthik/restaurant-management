@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { AddItem } from "./AddItem";
 import ItemCard from "./ItemCard";
 
+export const dynamic = "force-dynamic";
+
 export default async function MenuPage() {
   const supabase = await createClient()
 

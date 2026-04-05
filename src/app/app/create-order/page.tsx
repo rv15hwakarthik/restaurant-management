@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { CreateOrderClient } from "./create-order-client";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export default async function CreateOrderPage() {
   const supabase = await createClient()
 

@@ -101,8 +101,7 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: Request
 ) {
   try {
     const supabase = await createClient()

@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useRestaurant } from "@/components/restaurant-context";
+import { createClient } from "@/lib/supabase/client";
 
 const nav = [
   {
@@ -25,6 +26,15 @@ const nav = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { restaurantName } = useRestaurant();
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+
+    router.replace("/login");
+    router.refresh();
+  };
 
   return (
     <div className="flex h-dvh flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
@@ -33,12 +43,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
             {restaurantName}
           </p>
-          {/* <Link
-            href="/auth/signout"
+          <button
+            onClick={handleSignOut}
             className="shrink-0 text-xs font-medium text-zinc-500 underline dark:text-zinc-400"
           >
             Sign out
-          </Link> */}
+          </button>
         </div>
       </header>
       <main className="flex min-h-0 flex-1 flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))]">

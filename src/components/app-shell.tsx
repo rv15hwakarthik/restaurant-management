@@ -33,12 +33,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
             {restaurantName}
           </p>
-          <Link
+          {/* <Link
             href="/auth/signout"
             className="shrink-0 text-xs font-medium text-zinc-500 underline dark:text-zinc-400"
           >
             Sign out
-          </Link>
+          </Link> */}
         </div>
       </header>
       <main className="flex min-h-0 flex-1 flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom,0px))]">

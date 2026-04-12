@@ -35,7 +35,7 @@ export default async function MenuPage() {
   })
 
   return (
-    <div className="flex flex-1 flex-col px-4 pt-6">
+    <div className="flex flex-1 flex-col px-4 pt-6 pb-15">
       <h1 className="text-xl font-semibold tracking-tight flex items-center justify-between">
         <span>Menu</span>
         <AddItem />

@@ -36,6 +36,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No items" }, { status: 400 });
     }
 
+    const notes =
+      typeof body.notes === "string"
+        ? body.notes.trim().slice(0, 500) || null
+        : null;
+
     // ✅ Fetch menu items from DB (never trust client price)
     const menuItemIds = lines.map((l: any) => l.menuItemId);
 
@@ -79,6 +84,7 @@ export async function POST(req: Request) {
         createdByUserId: user.id,
         status: "OPEN",
         totalCents,
+        notes,
         lines: {
           create: orderLinesData,
         },

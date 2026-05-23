@@ -115,6 +115,7 @@ export function CreateOrderClient({ items }) {
 
 function Cart({ lines, subtotalCents, closeModal }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [notes, setNotes] = useState("");
   const router = useRouter();
 
   const handlePlaceOrder = async () => {
@@ -131,6 +132,7 @@ function Cart({ lines, subtotalCents, closeModal }) {
             menuItemId: l.id,
             quantity: l.qty,
           })),
+          notes,
         }),
       })
     router.replace("/app/orders");
@@ -158,6 +160,14 @@ function Cart({ lines, subtotalCents, closeModal }) {
       <span>Total</span>
       <span>{formatToRs(subtotalCents)}</span>
     </div>
+    <textarea
+      value={notes}
+      onChange={(e) => setNotes(e.target.value)}
+      maxLength={500}
+      rows={2}
+      placeholder="Notes (e.g. takeaway, no ice)"
+      className="w-full resize-none rounded-md border border-zinc-200 bg-transparent px-3 py-2 text-sm outline-none focus:border-zinc-400 dark:border-zinc-800 dark:focus:border-zinc-600"
+    />
     <div>
       <button onClick={handlePlaceOrder} disabled={isLoading} className="bg-zinc-900 text-white px-4 py-2 rounded-md w-full">
         {isLoading ? 'Placing...' : 'Place Order'}

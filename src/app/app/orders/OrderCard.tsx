@@ -38,6 +38,14 @@ export function OrderCard({ order }) {
             ))}
         </div>
 
+        {/* Notes */}
+        {order.notes && (
+            <div className="mt-3 rounded-md bg-zinc-50 px-3 py-2 text-xs text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+                <span className="font-semibold text-zinc-700 dark:text-zinc-300">Note: </span>
+                {order.notes}
+            </div>
+        )}
+
         {/* Total */}
         <div className="mt-3 flex justify-between border-t pt-2 text-sm font-medium">
             <span>Total</span>

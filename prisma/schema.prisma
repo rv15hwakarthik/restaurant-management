@@ -70,6 +70,7 @@ model Order {
   createdByUserId String      @map("created_by_user_id") @db.Uuid
   status          OrderStatus @default(DRAFT)
   totalCents      Int         @map("total_cents")
+  notes           String?
   createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz(6)
 

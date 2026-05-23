@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { OrderDetails } from "@/components/common/OrderDetails";
 
 export function OrderPageClient({
@@ -10,13 +11,14 @@ export function OrderPageClient({
   order: Parameters<typeof OrderDetails>[0]["order"];
   shouldPrint: boolean;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     if (shouldPrint) {
-      
       function afterPrint() {
-        window.close();
+        router.push("/app/create-order");
       }
-      
+
       window.addEventListener("afterprint", afterPrint);
       window.print();
 
@@ -24,7 +26,7 @@ export function OrderPageClient({
         window.removeEventListener("afterprint", afterPrint);
       };
     }
-  }, [shouldPrint]);
+  }, [shouldPrint, router]);
 
   return (
     <div className="flex flex-1 flex-col px-4 pt-6 overflow-auto">

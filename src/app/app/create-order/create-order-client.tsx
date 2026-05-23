@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from "react";
 import ItemCard from "./ItemCard";
 import { formatToRs } from "@/utils/currency";
 import { useModal } from "@/components/Modal";
-import { useRouter } from "next/navigation";
 
 type CartLine = {
   id: string;
@@ -116,13 +115,12 @@ export function CreateOrderClient({ items }) {
 function Cart({ lines, subtotalCents, closeModal }) {
   const [isLoading, setIsLoading] = useState(false);
   const [notes, setNotes] = useState("");
-  const router = useRouter();
 
   const handlePlaceOrder = async () => {
     setIsLoading(true);
 
     try {
-      await fetch("/api/orders", {
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,10 +132,13 @@ function Cart({ lines, subtotalCents, closeModal }) {
           })),
           notes,
         }),
-      })
-    router.replace("/app/orders");
-    router.refresh();
-    closeModal();
+      });
+
+      if (!res.ok) throw new Error("Failed to place order");
+
+      const order = await res.json();
+      window.open(`/app/order/${order.id}?print=true`, "_blank", "noopener,noreferrer");
+      closeModal();
     } catch(e) {
       console.error('Failed to place the order!', e)
       setIsLoading(false);

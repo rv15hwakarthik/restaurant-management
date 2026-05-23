@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { OrdersDateFilter } from "./DateFilter";
 import { getISTDateRange } from "@/utils/time";
-import { OrderCard } from "./OrderCard";
+import { OrderDetails } from "@/components/common/OrderDetails";
 import { formatToRs } from "@/utils/currency";
 
 export const dynamic = "force-dynamic";
@@ -64,7 +64,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
           <p className="text-sm text-zinc-500">No orders yet</p>
         ) : (
           orders.map((order) => (
-            <OrderCard key={order.id} order={order} />
+            <OrderDetails key={order.id} order={order} isCardView={true} />
           ))
         )}
         <div className="flex justify-between text-lg">

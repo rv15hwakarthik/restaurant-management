@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </p>
           <button
             onClick={handleSignOut}
-            className="shrink-0 text-xs font-medium text-zinc-500 underline dark:text-zinc-400"
+            className="shrink-0 text-xs font-medium text-zinc-500 underline dark:text-zinc-400 print:hidden"
           >
             Sign out
           </button>
@@ -55,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-200/80 bg-white/95 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/95"
+        className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-200/80 bg-white/95 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/95 print:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
         aria-label="Main"
       >

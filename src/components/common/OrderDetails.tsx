@@ -2,17 +2,17 @@
 
 import { formatToRs } from "@/utils/currency";
 
-export function OrderCard({ order }) {
+export function OrderDetails({ order, isCardView = false }) {
     return (<div
         key={order.id}
-        className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+        className={`border-zinc-200p-4 ${isCardView ? "rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900" : ""}`}
     >
         {/* Header */}
         <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-bold">
                 Order #{order.id.slice(0, 6)}
             </span>
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-zinc-500 italic">
   {new Date(order.createdAt).toLocaleTimeString("en-IN", {
     timeZone: "Asia/Kolkata",
     hour: "2-digit",
